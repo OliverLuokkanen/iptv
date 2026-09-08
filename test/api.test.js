@@ -31,6 +31,15 @@ test.after(async () => {
   await db.close();
 });
 
+test('serves the static frontend at the root path', async () => {
+  const response = await request(app)
+    .get('/')
+    .expect('Content-Type', /html/)
+    .expect(200);
+
+  assert.match(response.text, /IPTV Web UI/);
+});
+
 test('register and login returns JWT tokens', async () => {
   const registerResponse = await request(app)
     .post('/api/auth/register')

@@ -1,4 +1,5 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const { authenticateRequest, extractToken, hashPassword, signToken, verifyPassword } = require('./auth');
 const { createConfig } = require('./config');
 const { initDatabase } = require('./db');
@@ -93,8 +94,24 @@ async function createApp(overrides = {}) {
   const db = await initDatabase(config);
   const app = express();
   const requireAuth = authenticateRequest(config.jwtSecret);
+  const apiRateLimit = rateLimit({
+    windowMs: 60 * 1000,
+    limit: 120,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: 'Too many requests, please try again later' },
+  });
+  const authRateLimit = rateLimit({
+    windowMs: 60 * 1000,
+    limit: 20,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: 'Too many authentication attempts, please try again later' },
+  });
 
   app.use(express.json());
+  app.use('/api', apiRateLimit);
+  app.use('/api/auth', authRateLimit);
   app.locals.config = config;
   app.locals.db = db;
 

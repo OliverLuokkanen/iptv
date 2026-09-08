@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>IPTV</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">IPTV Web UI</p>
+          <h1>Browse channels, manage content, and play streams</h1>
+          <p class="muted">
+            Sign in to load channels, update the lineup, inspect EPG data, and launch the
+            browser player.
+          </p>
+        </div>
+        <div class="auth-status-card">
+          <p id="auth-status">Not signed in</p>
+          <button id="logout-button" type="button" class="secondary" hidden>Log out</button>
+        </div>
+      </header>
+
+      <section class="panel auth-panel">
+        <div>
+          <h2>Register</h2>
+          <form id="register-form" class="stack">
+            <label>
+              Username
+              <input name="username" autocomplete="username" required />
+            </label>
+            <label>
+              Password
+              <input name="password" type="password" autocomplete="new-password" minlength="6" required />
+            </label>
+            <button type="submit">Register</button>
+          </form>
+        </div>
+
+        <div>
+          <h2>Log in</h2>
+          <form id="login-form" class="stack">
+            <label>
+              Username
+              <input name="username" autocomplete="username" required />
+            </label>
+            <label>
+              Password
+              <input name="password" type="password" autocomplete="current-password" required />
+            </label>
+            <button type="submit">Log in</button>
+          </form>
+        </div>
+      </section>
+
+      <p id="auth-message" class="message" hidden></p>
+
+      <section class="content-grid">
+        <section class="panel">
+          <div class="section-header">
+            <div>
+              <h2>Channels</h2>
+              <p class="muted">Click a channel to play its stream and filter the guide.</p>
+            </div>
+            <button id="reload-button" type="button" class="secondary">Reload</button>
+          </div>
+          <p id="channels-message" class="message" hidden></p>
+          <div id="channel-list" class="channel-grid"></div>
+        </section>
+
+        <section id="channel-form-panel" class="panel" hidden>
+          <div class="section-header">
+            <div>
+              <h2 id="channel-form-title">Add channel</h2>
+              <p class="muted">Authenticated users can create, edit, and delete channels.</p>
+            </div>
+            <button id="cancel-edit-button" type="button" class="secondary" hidden>Cancel edit</button>
+          </div>
+          <form id="channel-form" class="stack">
+            <label>
+              Name
+              <input name="name" required />
+            </label>
+            <label>
+              Stream URL
+              <input name="url" type="url" placeholder="https://example.com/live/channel.m3u8" required />
+            </label>
+            <label>
+              Category
+              <input name="category" value="General" />
+            </label>
+            <label>
+              Logo URL
+              <input name="logo" type="url" placeholder="https://example.com/logo.png" />
+            </label>
+            <label>
+              TVG ID
+              <input name="tvgId" placeholder="channel-id" />
+            </label>
+            <button type="submit">Save channel</button>
+          </form>
+          <p id="channel-form-message" class="message" hidden></p>
+        </section>
+      </section>
+
+      <section class="content-grid">
+        <section class="panel">
+          <h2>Player</h2>
+          <video id="video-player" controls playsinline></video>
+          <p id="player-message" class="message" hidden></p>
+        </section>
+
+        <section class="panel">
+          <div class="section-header">
+            <div>
+              <h2>EPG</h2>
+              <p class="muted">Use the filter to focus on a single channel schedule.</p>
+            </div>
+            <div class="filter-row">
+              <label for="epg-filter" class="sr-only">Filter by channel</label>
+              <select id="epg-filter"></select>
+              <button id="refresh-epg-button" type="button" class="secondary">Refresh</button>
+            </div>
+          </div>
+          <p id="epg-message" class="message" hidden></p>
+          <div id="epg-list" class="epg-list"></div>
+        </section>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="/app.js"></script>
+  </body>
+</html>

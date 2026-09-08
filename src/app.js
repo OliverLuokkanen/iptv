@@ -1,5 +1,6 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
+const path = require('path');
 const { authenticateRequest, extractToken, hashPassword, signToken, verifyPassword } = require('./auth');
 const { createConfig } = require('./config');
 const { initDatabase } = require('./db');
@@ -110,6 +111,7 @@ async function createApp(overrides = {}) {
   });
 
   app.use(express.json());
+  app.use(express.static(path.join(__dirname, '..', 'public')));
   app.use('/api', apiRateLimit);
   app.use('/api/auth', authRateLimit);
   app.locals.config = config;

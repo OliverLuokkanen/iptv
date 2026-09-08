@@ -1,11 +1,12 @@
 # iptv
 
-Express.js IPTV backend with SQLite storage, JWT authentication, M3U playlist generation, EPG data, and Docker support.
+Express.js IPTV app with a lightweight web frontend, SQLite storage, JWT authentication, M3U playlist generation, EPG data, and Docker support.
 
 ## Features
 
 - Channel CRUD (`/api/channels`, `/api/channels/:id`)
 - JWT-based user registration and login
+- Static web UI served from `/` for login, channel management, EPG browsing, and HLS playback
 - M3U playlist generation for IPTV clients
 - Simple EPG endpoint with channel schedule data
 - Stream redirect endpoint for HLS/DASH-compatible source URLs
@@ -37,7 +38,7 @@ Express.js IPTV backend with SQLite storage, JWT authentication, M3U playlist ge
    npm start
    ```
 
-The API starts on `http://localhost:3000` by default.
+The app starts on `http://localhost:3000` by default. After startup, open `http://localhost:3000/` in a browser to use the web UI.
 
 ## Environment variables
 
@@ -67,6 +68,15 @@ curl -X POST http://localhost:3000/api/auth/login \
 ```
 
 Use the returned JWT in an `Authorization` header as a bearer token for protected endpoints.
+
+## Web frontend
+
+The frontend is served as static files by the existing Express server, so no separate build step is required.
+
+- Visit `http://localhost:3000/` after `npm start`
+- Or start with Docker and open the same URL after `docker compose up --build`
+- Register or log in to store the JWT in the browser and unlock the protected API-backed views
+- Browse channels, add/edit/delete channels, inspect EPG entries, and launch HLS playback directly in the page
 
 ## API overview
 
